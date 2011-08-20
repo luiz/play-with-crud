@@ -2,7 +2,7 @@ package models;
 
 import static org.hamcrest.Matchers.contains;
 
-import java.util.Calendar;
+import java.util.Date;
 
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class UserTest extends UnitTest {
 	@Test
 	public void addingATaskToAnUserAndRefreshingItShouldMakeTheUserRetrieveThatTask() throws Exception {
 		User foo = new User("foo@bar.com", "baz").save();
-		Task doTheDishes = new Task("Do the dishes", foo, Calendar.getInstance()).save();
+		Task doTheDishes = new Task("Do the dishes", foo, new Date()).save();
 		foo.refresh();
 		assertThat(foo.tasks, contains(doTheDishes));
 	}

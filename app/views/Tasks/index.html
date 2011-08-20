@@ -1,0 +1,23 @@
+#{extends 'main.html' /}
+#{set title:'TODO' /}
+
+<h1>Your tasks</h1>
+
+#{if tasks.size() > 0}
+	<table>
+		<thead>
+			<th>What?</th>
+			<th>Until...</th>
+		</thead>
+		#{list items:tasks, as:'task'}
+			<tr>
+				<td>${task.title}</td>
+				<td>${task.dueTo == null ? 'One day...' : task.dueTo.format('dd/MM/yyyy')}</td>
+			</tr>
+		#{/list}
+	</table>
+#{/if}
+
+#{else}
+	<p>No tasks. Yey!</p>
+#{/else}

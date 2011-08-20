@@ -1,6 +1,6 @@
 package models;
 
-import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -16,9 +16,9 @@ public class Task extends Model {
 	@ManyToOne
 	public User owner;
 	@Temporal(TemporalType.DATE)
-	public Calendar dueTo;
+	public Date dueTo;
 
-	public Task(String title, User owner, Calendar dueTo) {
+	public Task(String title, User owner, Date dueTo) {
 		this.title = title;
 		this.owner = owner;
 		this.dueTo = dueTo;

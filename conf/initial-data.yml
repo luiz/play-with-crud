@@ -1,0 +1,12 @@
+User(foo):
+  email: foo@bar.com
+  password: baz
+
+Task(finishThis):
+  title: Finish this example
+  author: foo
+  dueTo: 2011-08-21
+
+Task(buyANewPC):
+  title: Buy a new PC
+  author: foo
