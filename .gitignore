@@ -4,3 +4,4 @@ tmp
 .settings
 .*.swp
 *~
+test-result
