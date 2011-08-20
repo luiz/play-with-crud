@@ -6,11 +6,14 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
 public class User extends Model {
+	@Required
 	public String email;
+	@Required
 	public String password;
 	@OneToMany(mappedBy="owner")
 	public List<Task> tasks = new ArrayList<Task>();
