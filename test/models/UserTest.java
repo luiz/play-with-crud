@@ -5,11 +5,17 @@ import static org.hamcrest.Matchers.contains;
 import java.util.Date;
 
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
 
+import play.test.Fixtures;
 import play.test.UnitTest;
 
 public class UserTest extends UnitTest {
+	@Before
+	public void setUp() throws Exception {
+		Fixtures.deleteDatabase();
+	}
 	@Test
 	public void retrievesAnUserByEmailAndCorrectPassword() throws Exception {
 		User foo = new User("foo@bar.com", "baz").save();

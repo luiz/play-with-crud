@@ -1,5 +1,8 @@
 package controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import models.Task;
 
 import org.junit.Before;
@@ -11,8 +14,20 @@ import play.test.FunctionalTest;
 
 public class TasksTest extends FunctionalTest {
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Throwable {
 		Fixtures.deleteDatabase();
+		Fixtures.loadModels("initial-data.yml");
+		Map<String, String> loginUserParams = new HashMap<String, String>();
+	    loginUserParams.put("username", "foo@bar.com");
+	    loginUserParams.put("password", "baz");
+	    POST("/login", loginUserParams);
+	}
+
+	@Test
+	public void doesntAllowAccessIfNotLoggedIn() throws Exception {
+		clearCookies();
+		Response response = GET("/tasks");
+		assertStatus(302, response);
 	}
 
 	@Test
@@ -25,14 +40,20 @@ public class TasksTest extends FunctionalTest {
 	}
 
 	@Test
+	public void showLoggedUserInIndex() throws Exception {
+		Response response = GET("/tasks");
+		assertContentMatch("Hello, foo@bar.com", response);
+	}
+
+	@Test
 	public void showsNiceMessageWhenThereAreNoTasks() throws Exception {
+		Task.deleteAll();
 		Response response = GET("/tasks");
 		assertContentMatch("No tasks", response);
 	}
 
 	@Test
 	public void listsTasksWithAndWithoutDate() throws Exception {
-		Fixtures.loadModels("initial-data.yml");
 		Response response = GET("/tasks");
 		assertContentMatch("Buy a new PC", response);
 		assertContentMatch("One day...", response);
@@ -42,7 +63,6 @@ public class TasksTest extends FunctionalTest {
 
 	@Test
 	public void showASpecificTask() throws Exception {
-		Fixtures.loadModels("initial-data.yml");
 		Task firstTask = Task.all().first();
 		assertNotNull(firstTask);
 		Response response = GET("/tasks/" + firstTask.id);
@@ -51,6 +71,7 @@ public class TasksTest extends FunctionalTest {
 
 	@Test
 	public void tryToShowAnNonExistingTaskGives404() throws Exception {
+		Task.deleteAll();
 		assertEquals(0, Task.count());
 		Response response = GET("/tasks/1");
 		assertStatus(404, response);
