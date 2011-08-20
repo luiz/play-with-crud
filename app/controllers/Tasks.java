@@ -10,15 +10,16 @@ import play.mvc.With;
 
 @With(Secure.class)
 public class Tasks extends Controller {
+	private static User loggedUser;
 	@Before
     static void setConnectedUser() {
         if(Security.isConnected()) {
-            User user = User.find("byEmail", Security.connected()).first();
-            renderArgs.put("user", user);
+            loggedUser = User.find("byEmail", Security.connected()).first();
+            renderArgs.put("user", loggedUser);
         }
     }
 	public static void index() {
-		List<Task> tasks = Task.all().fetch();
+		List<Task> tasks = loggedUser.tasks;
 		render(tasks);
 	}
 	public static void show(Long id) {

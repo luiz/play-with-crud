@@ -1,5 +1,8 @@
 package controllers;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,10 +58,11 @@ public class TasksTest extends FunctionalTest {
 	@Test
 	public void listsTasksWithAndWithoutDate() throws Exception {
 		Response response = GET("/tasks");
-		assertContentMatch("Buy a new PC", response);
-		assertContentMatch("One day...", response);
-		assertContentMatch("Finish this example", response);
-		assertContentMatch("20/08/2011", response);
+		String responseContent = getContent(response);
+		assertThat(responseContent, containsString("Buy a new PC"));
+		assertThat(responseContent, containsString("One day..."));
+		assertThat(responseContent, containsString("Finish this example"));
+		assertThat(responseContent, containsString("20/08/2011"));
 	}
 
 	@Test
@@ -75,5 +79,11 @@ public class TasksTest extends FunctionalTest {
 		assertEquals(0, Task.count());
 		Response response = GET("/tasks/1");
 		assertStatus(404, response);
+	}
+
+	@Test
+	public void showsOnlyTasksOfTheLoggedUser() throws Exception {
+		Response response = GET("/tasks");
+		assertThat(getContent(response), not(containsString("Kill Mr. Foo")));
 	}
 }

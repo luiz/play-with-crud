@@ -2,11 +2,19 @@ User(foo):
   email: foo@bar.com
   password: baz
 
+User(notfoo):
+  email: notfoo@bar.com
+  password: biz
+
 Task(finishThis):
   title: Finish this example
-  author: foo
+  owner: foo
   dueTo: 2011-08-21
 
 Task(buyANewPC):
   title: Buy a new PC
-  author: foo
+  owner: foo
+
+Task(killFoo):
+  title: Kill Mr. Foo
+  owner: notfoo
