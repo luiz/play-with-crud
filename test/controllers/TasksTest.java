@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import models.Task;
+import models.User;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -85,5 +86,19 @@ public class TasksTest extends FunctionalTest {
 	public void showsOnlyTasksOfTheLoggedUser() throws Exception {
 		Response response = GET("/tasks");
 		assertThat(getContent(response), not(containsString("Kill Mr. Foo")));
+	}
+
+	@Test
+	public void createsATaskForTheLoggedUserAndRedirectsToList() throws Exception {
+		Map<String, String> newTaskParams = new HashMap<String, String>();
+		newTaskParams.put("title", "Do something else");
+		newTaskParams.put("dueTo", "2011-09-07");
+		Response response = POST("/tasks/new", newTaskParams);
+		Task insertedTask = Task.find("byTitle", "Do something else").first();
+		User foo = User.find("byEmail", "foo@bar.com").first();
+		assertNotNull(insertedTask);
+		assertEquals(foo, insertedTask.owner);
+		assertStatus(302, response);
+		assertHeaderEquals("Location", "/tasks", response);
 	}
 }

@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import models.Task;
@@ -29,5 +30,14 @@ public class Tasks extends Controller {
 		} else {
 			render(task);
 		}
+	}
+
+	public static void newTaskForm() {
+		render();
+	}
+
+	public static void create(String title, Date dueTo) {
+		new Task(title, loggedUser, dueTo).save();
+		redirect("Tasks.index");
 	}
 }

@@ -4,6 +4,8 @@
 
 # Home page
 GET     /tasks                                  Tasks.index
+GET     /tasks/new                              Tasks.newTaskForm
+POST    /tasks/new                              Tasks.create
 GET     /tasks/{id}                             Tasks.show
 
 # Ignore favicon requests

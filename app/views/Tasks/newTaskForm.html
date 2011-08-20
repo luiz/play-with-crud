@@ -1,0 +1,10 @@
+#{extends 'main.html' /}
+#{set title:'New task' /}
+
+<h1>New task</h1>
+
+<form action="new" method="post">
+	<label>Title: <input name="title"/></label>
+	<label>Due to: <input type="date" name="dueTo"/></label>
+	<input type="submit"/>
+</form>
