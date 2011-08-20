@@ -3,8 +3,16 @@
 
 <h1>New task</h1>
 
+#{ifErrors}
+<ul id="errors">
+	#{errors}
+	<li>${error}</li>
+	#{/errors}
+</ul>
+#{/ifErrors}
+
 <form action="new" method="post">
-	<label>Title: <input name="title"/></label>
-	<label>Due to: <input type="date" name="dueTo"/></label>
+	<label>Title: <input name="task.title"/></label>
+	<label>Due to: <input type="date" name="task.dueTo"/></label>
 	<input type="submit"/>
 </form>

@@ -1,10 +1,10 @@
 package controllers;
 
-import java.util.Date;
 import java.util.List;
 
 import models.Task;
 import models.User;
+import play.data.validation.Valid;
 import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -36,8 +36,14 @@ public class Tasks extends Controller {
 		render();
 	}
 
-	public static void create(String title, Date dueTo) {
-		new Task(title, loggedUser, dueTo).save();
-		redirect("Tasks.index");
+	public static void create(@Valid Task task) {
+		if (validation.hasErrors()) {
+			validation.keep();
+			newTaskForm();
+		} else {
+			task.owner = loggedUser;
+			task.save();
+			index();
+		}
 	}
 }

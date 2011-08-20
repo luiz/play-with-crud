@@ -91,8 +91,8 @@ public class TasksTest extends FunctionalTest {
 	@Test
 	public void createsATaskForTheLoggedUserAndRedirectsToList() throws Exception {
 		Map<String, String> newTaskParams = new HashMap<String, String>();
-		newTaskParams.put("title", "Do something else");
-		newTaskParams.put("dueTo", "2011-09-07");
+		newTaskParams.put("task.title", "Do something else");
+		newTaskParams.put("task.dueTo", "2011-09-07");
 		Response response = POST("/tasks/new", newTaskParams);
 		Task insertedTask = Task.find("byTitle", "Do something else").first();
 		User foo = User.find("byEmail", "foo@bar.com").first();
@@ -100,5 +100,15 @@ public class TasksTest extends FunctionalTest {
 		assertEquals(foo, insertedTask.owner);
 		assertStatus(302, response);
 		assertHeaderEquals("Location", "/tasks", response);
+	}
+
+	@Test
+	public void doesntCreateATaskWithoutATitle() throws Exception {
+		Task.deleteAll();
+		Map<String, String> newTaskParams = new HashMap<String, String>();
+		newTaskParams.put("task.title", "");
+		newTaskParams.put("task.dueTo", "2011-09-07");
+		POST("/tasks/new", newTaskParams);
+		assertEquals(0, Task.count());
 	}
 }
