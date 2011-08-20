@@ -10,4 +10,12 @@ public class Tasks extends Controller {
 		List<Task> tasks = Task.all().fetch();
 		render(tasks);
 	}
+	public static void show(Long id) {
+		Task task = Task.findById(id);
+		if (task == null) {
+			notFound();
+		} else {
+			render(task);
+		}
+	}
 }

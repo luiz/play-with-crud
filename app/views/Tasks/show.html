@@ -1,0 +1,8 @@
+#{extends 'main.html' /}
+#{set title:'Task details' /}
+
+<h1>${task.title}</h1>
+
+<p>Due to: ${task.dueTo == null ? 'One day...' : task.dueTo.format('dd/MM/yyyy')}</p>
+
+<p><a href="@{Tasks.index()}">Back</a></p>
