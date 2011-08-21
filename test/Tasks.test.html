@@ -1,0 +1,26 @@
+#{fixture delete:'all', load:'initial-data.yml' /}
+
+#{selenium 'Create a task'}
+	clearSession()
+	
+	open('/tasks')
+	verifyTitle('Login')
+	type('username', 'foo@bar.com')
+	type('password', 'baz')
+	submitAndWait('css=form')
+	
+	verifyTitle('TODO')
+	assertTextPresent('Finish this example')
+	
+	clickAndWait('link=Create new task')
+	type('task.dueTo', '2011-08-21')
+	submitAndWait('css=form')
+	
+	assertTextPresent('required')
+	type('task.title', 'New task')
+	type('task.dueTo', '2011-08-21')
+	submitAndWait('css=form')
+	
+	assertTextPresent('Finish this example')
+	assertTextPresent('New task')
+#{/selenium}
